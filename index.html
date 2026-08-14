@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Dashboard</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; background: #f0f0f0; }
+        .box { background: white; padding: 30px; border-radius: 10px; max-width: 500px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        #timestamp { color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Continuos Deployment</h1>
+        <p id="timestamp">Loading time...</p>
+        <p><small>Version: 1.0</small></p>
+    </div>
+    <script>
+        // This updates the time every second
+        function updateTime() {
+            document.getElementById('timestamp').innerText = "Last updated: " + new Date().toLocaleString();
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
