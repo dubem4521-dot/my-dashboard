@@ -1,6 +1,6 @@
 @echo off
 echo ===============================
-echo Deploying to nginx
+echo Deploying to nginx server
 echo ===============================
 
 set nginx_path=C:\Users\Taku\AppData\Local\Microsoft\WinGet\Packages\nginxinc.nginx_Microsoft.Winget.Source_8wekyb3d8bbwe\nginx-1.31.3\html
