@@ -7,6 +7,6 @@ set nginx_path=C:\Users\Taku\AppData\Local\Microsoft\WinGet\Packages\nginxinc.ng
 
 echo copying files to %nginx_path%
 copy index.html %nginx_path%\index.html /Y
-copy style.css %nginx_path|style.css /Y 2>nul
+copy style.css %nginx_path%\style.css /Y 2>nul
 
 echo FILES SUCCESSFULY DEPLOYED
