@@ -1,22 +1,20 @@
 @echo off
 echo ===============================
-echo Deploying to nginx server
+echo Docker Deployment
 echo ===============================
 
-set nginx_path=C:\Users\Taku\AppData\Local\Microsoft\WinGet\Packages\nginxinc.nginx_Microsoft.Winget.Source_8wekyb3d8bbwe\nginx-1.31.3\html
-set backup_path=%nginx_path%\backups\%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%
+echo Building Docker image...
+docker build -t my-dashboard:latest .
 
-set backup_path=%backup_path: =0%
+echo Docker image Built successfully.
 
-echo CREATING BACKUP FOLDER: %backup_path%
-mkdir "%backup_path%" 2>nul
+echo Stopping old container if it exists...
 
-echo copying files to %nginx_path%
-copy "%nginx_path%\index.html" "%backup_path%\index.html" /Y
-copy "%nginx_path%\style.css" "%backup_path%\style.css" /Y 2>nul
+docker stop my-site 2>nul
+docker rm my-site 2>nul
 
-echo BACKUP COMPLETED. NOW COPYING NEW FILES TO %nginx_path%
-copy index.html %nginx_path%\index.html /Y
-copy style.css %nginx_path%\style.css /Y 2>nul
+docker run -d -p 8080:80 --name mysite my-dashboard:latest
 
-echo FILES SUCCESSFULY DEPLOYED
+echo Deployment completed
+
+echo visit http://localhost:8080 to view the dashboard
