@@ -1,11 +1,11 @@
-name: Build, Push, and Deploy
+name: Deploy to Azure VM
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
