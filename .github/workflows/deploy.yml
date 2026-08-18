@@ -1,0 +1,45 @@
+name: Build, Push, and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-dashboard:latest .
+
+      - name: Push to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/my-dashboard:latest
+
+      - name: Deploy to Azure VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Pulling latest image..."
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-dashboard:latest
+
+            echo "Stopping old container..."
+            docker stop my-site || true
+            docker rm my-site || true
+
+            echo "Running new container..."
+            docker run -d -p 80:80 --name my-site ${{ secrets.DOCKER_USERNAME }}/my-dashboard:latest
+
+            echo "Deployment complete!"
+            docker ps
